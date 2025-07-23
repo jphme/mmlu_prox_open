@@ -1338,6 +1338,7 @@ dependencies = [
     { name = "huggingface-hub" },
     { name = "ipykernel" },
     { name = "loguru" },
+    { name = "nest-asyncio" },
     { name = "openai" },
     { name = "python-dotenv" },
 ]
@@ -1350,6 +1351,7 @@ requires-dist = [
     { name = "huggingface-hub", specifier = ">=0.33.4" },
     { name = "ipykernel", specifier = ">=6.30.0" },
     { name = "loguru", specifier = ">=0.7.3" },
+    { name = "nest-asyncio", specifier = ">=1.6.0" },
     { name = "openai", specifier = ">=1.97.1" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
 ]
