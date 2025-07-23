@@ -26,10 +26,17 @@ This repo processes MMLU-ProX-Lite dataset to create an open-ended version by fi
      - Keep only columns: `question_id`, `question`, `answer`, `cot_content`, `category`, `src`
   4. Upload as DatasetDict to `jphme/MMLU-ProX-Lite-open`
 
-### 3. Data Files
+### 3. Elluminate Integration (`elluminate_upload.ipynb`)
+- **Purpose**: Upload processed dataset to Elluminate for analysis and evaluation
+- **Framework**: Uses Elluminate Python SDK
+- **Input**: MMLU-ProX-Lite-open dataset from HuggingFace
+- **Output**: Separate Elluminate collections for each language
+- **Processing**: Removes empty `cot_content` column, creates 29 language-specific collections
+
+### 4. Data Files
 - `mmlu_prox_classified/`: Local cache of classified dataset
 - `is_answerable.csv`: CSV mapping of question_id to is_answerable flag
-- `.env`: Contains HF_TOKEN for HuggingFace authentication
+- `.env`: Contains HF_TOKEN for HuggingFace and ELLUMINATE_API_KEY/ELLUMINATE_BASE_URL for Elluminate
 
 ## Dataset Format
 
@@ -54,9 +61,21 @@ This repo processes MMLU-ProX-Lite dataset to create an open-ended version by fi
     'question_id': int,
     'question': str,
     'answer': str,  # Actual answer text, not letter
-    'cot_content': str,
+    'cot_content': str,  # NOTE: Empty in current dataset
     'category': str,
     'src': str
+}
+```
+
+### Elluminate Collections Format
+```python
+{
+    'question_id': int,
+    'question': str,
+    'answer': str,  # Actual answer text, not letter
+    'category': str,
+    'src': str
+    # cot_content removed as it's empty
 }
 ```
 
@@ -73,22 +92,29 @@ python question_classifier.py
 ### Process and Upload (via notebook)
 Execute all cells in `mmlu_analysis.ipynb`
 
+### Upload to Elluminate
+Execute all cells in `elluminate_upload.ipynb`
+
 ### Check Dataset Stats
 - Total questions per language: 588
 - Answerable questions per language: ~470 (79.93%)
 - Total processed questions: ~13,630 across all languages
 
 ## Environment Setup
-- Requires HF_TOKEN in `.env` file
-- Dependencies in `pyproject.toml`
+- Requires HF_TOKEN in `.env` file for HuggingFace access
+- Requires ELLUMINATE_API_KEY and ELLUMINATE_BASE_URL in `.env` file for Elluminate integration
+- Dependencies in `pyproject.toml` (includes elluminate, datasets, python-dotenv)
 - Azure OpenAI or OpenAI API access for classification
 
 ## Key Links
 - Original: https://huggingface.co/datasets/li-lab/MMLU-ProX-Lite
 - Processed: https://huggingface.co/datasets/jphme/MMLU-ProX-Lite-open
 - Curator: https://github.com/bespokelabsai/curator
+- Elluminate: https://docs.elluminate.de/llms-full.txt
 
 ## Troubleshooting
 - If HuggingFace upload fails, check HF_TOKEN in `.env`
 - If classification fails, verify Azure OpenAI credentials
+- If Elluminate upload fails, check ELLUMINATE_API_KEY and ELLUMINATE_BASE_URL in `.env`
 - Dataset processing expects exactly 588 questions per language config
+- Elluminate collections expect 470 questions per language (after filtering)
