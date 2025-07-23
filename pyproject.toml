@@ -1,0 +1,15 @@
+[project]
+name = "mmlux-pro-openended"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "bespokelabs-curator>=0.1.26",
+    "datasets>=3.6.0",
+    "elluminate>=0.5.0",
+    "huggingface-hub>=0.33.4",
+    "loguru>=0.7.3",
+    "openai>=1.97.1",
+    "python-dotenv>=1.1.1",
+]
